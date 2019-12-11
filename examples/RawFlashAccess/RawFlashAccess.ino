@@ -41,6 +41,8 @@ void setup()
   snprintf(msg, sizeof(msg), "ID: %02X %02X %02X", id.manufacturer_id, id.memory_type, id.capacity);
   Serial.println(msg);
 
+  /* Perform a complete chip erase (may last a little while) */
+  memory.eraseChip();
 
   uint8_t data_write[256] = {0},
           data_read [256] = {0};

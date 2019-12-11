@@ -124,6 +124,20 @@ void W25Q16DV::eraseSector(uint32_t const addr)
   deselect();
 }
 
+void W25Q16DV::eraseChip()
+{
+  while(isBusy()) { delayMicroseconds(1); }
+
+  enableWrite();
+
+  select();
+  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ChipErase));
+  deselect();
+
+  /* In this instance wait within this function since it's so time consuming */
+  while(isBusy()) { delayMicroseconds(1); }
+}
+
 /**************************************************************************************
  * PRIVATE MEMBER FUNCTIONS
  **************************************************************************************/

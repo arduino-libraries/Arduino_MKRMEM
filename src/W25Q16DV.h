@@ -36,6 +36,7 @@ enum class W25Q16DV_Command : uint8_t
   ReadStatusReg1 = 0x05,
   WriteEnable    = 0x06,
   SectorErase    = 0x20,
+  ChipErase      = 0x60,
   ReadJedecId    = 0x9F,
 };
 
@@ -86,6 +87,7 @@ public:
   void read       (uint32_t const addr, uint8_t       * buf, uint32_t const size);
   void programPage(uint32_t const addr, uint8_t const * buf, uint32_t const size);
   void eraseSector(uint32_t const addr);
+  void eraseChip  ();
 
 
   static uint32_t const PAGE_SIZE   = 256;
