@@ -35,6 +35,11 @@ s32_t w25q16_spi_erase(u32_t addr, u32_t size);
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
 
+s32_t SPIFFS::format()
+{
+  return SPIFFS_format(&_fs);
+}
+
 s32_t SPIFFS::mount()
 {
   spiffs_config cfg;
@@ -51,6 +56,21 @@ s32_t SPIFFS::mount()
                       _spiffs_cache_buf,
                       sizeof(_spiffs_cache_buf),
                       0);
+}
+
+s32_t SPIFFS::check()
+{
+  return SPIFFS_check(&_fs);
+}
+
+s32_t SPIFFS::info(u32_t & total, u32_t & used)
+{
+  return SPIFFS_info(&_fs, &total, &used);
+}
+
+void SPIFFS::unmount()
+{
+  SPIFFS_unmount(&_fs);
 }
 
 /**************************************************************************************

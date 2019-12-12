@@ -33,7 +33,12 @@ class SPIFFS
 {
 public:
 
+  s32_t format();
   s32_t mount();
+  s32_t check();
+  s32_t info(u32_t & total, u32_t & used);
+  void  unmount();
+
 
 private:
 
