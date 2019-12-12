@@ -14,6 +14,7 @@
 
 #undef max
 #undef min
+#include <array>
 #include <algorithm>
 
 /**************************************************************************************
@@ -44,30 +45,28 @@ void setup()
   /* Perform a complete chip erase (may last a little while) */
   memory.eraseChip();
 
-  uint8_t data_write[256] = {0},
-          data_read [256] = {0};
+  std::array<uint8_t, 256> data_write = {0},
+                           data_read  = {0};
   
   /* Initialize data */
-  std::for_each(data_write,
-                data_write + sizeof(data_write),
-                [&](uint8_t & elem)
+  std::transform(data_write.begin(), data_write.end(), data_write.begin(),
+                [](uint8_t const elem)
                 {
                   static uint8_t i = 0;
-                  elem = i;
-                  i++;
+                  return i++;
                 });
   
-  printArray("WR: ", data_write, sizeof(data_write));
+  printArray("WR: ", data_write);
 
   /* Write data to chip to first block */
-  memory.programPage(0x000100, data_write, sizeof(data_write));
+  memory.programPage(0x000100, data_write.data(), data_write.size());
 
   /* Read data back in another array */
-  memory.read(0x000100, data_read, sizeof(data_read));
-  printArray("RD: ", data_read, sizeof(data_read));
+  memory.read(0x000100, data_read.data(), data_read.size());
+  printArray("RD: ", data_read);
 
   /* Compare the two data buffers */
-  if(std::equal(data_write, data_write + sizeof(data_write), data_read)) {
+  if(std::equal(data_write.begin(), data_write.end(), data_read.begin())) {
     Serial.println("Comparison OK");
   } else {
     Serial.println("Comparison FAIL");
@@ -77,16 +76,14 @@ void setup()
   memory.eraseSector(0x000000);
 
   /* Set the comparison buffer to 0xFF since we now need to compare if every value is 0xFF */
-  memset(data_write, 0xFF, sizeof(data_write));
+  std::fill(data_write.begin(), data_write.end(), 0xFF);
 
   /* Read the data */
-  memory.read(0x000100, data_read, sizeof(data_read));
-  printArray("RD: ", data_read, sizeof(data_read));
+  memory.read(0x000100, data_read.data(), data_read.size());
+  printArray("RD: ", data_read);
 
   /* Compare the two data buffers */
-  if(std::all_of(data_read,
-                 data_read + sizeof(data_read),
-                 [](uint8_t const elem) { return (elem == 0xFF); })) {
+  if(std::all_of(data_read.begin(), data_read.end(), [](uint8_t const elem) { return (elem == 0xFF); })) {
     Serial.println("Comparison OK");
   } else {
     Serial.println("Comparison FAIL");
@@ -102,12 +99,11 @@ void loop()
  * HELPER
  **************************************************************************************/
 
-void printArray(char const * desc, uint8_t const * arr, size_t const arr_size)
+void printArray(char const * desc, std::array<uint8_t, 256> arr)
 {
   Serial.print(desc);
   
-  std::for_each(arr,
-                arr + arr_size,
+  std::for_each(arr.begin(), arr.end(),
                 [](uint8_t const elem)
                 {
                   Serial.print(elem, HEX);
