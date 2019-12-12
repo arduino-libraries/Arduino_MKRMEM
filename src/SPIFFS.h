@@ -16,14 +16,33 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef MKRMEM_H_
-#define MKRMEM_H_
+#ifndef ARDUINO_SPIFFS_H_
+#define ARDUINO_SPIFFS_H_
 
 /**************************************************************************************
  * INCLUDE
  **************************************************************************************/
 
-#include "SPIFFS.h"
-#include "W25Q16DV.h"
+#include "spiffs.h"
 
-#endif /* MKRMEM_H_ */
+/**************************************************************************************
+ * CLASS DECLARATION
+ **************************************************************************************/
+
+class SPIFFS
+{
+public:
+
+  s32_t mount();
+
+private:
+
+  spiffs _fs;
+  
+  u8_t   _spiffs_work_buf[SPIFFS_CFG_LOG_PAGE_SZ(0)*2];
+  u8_t   _spiffs_fds[32*4];
+  u8_t   _spiffs_cache_buf[(SPIFFS_CFG_LOG_PAGE_SZ(0)+32)*4];
+
+};
+
+#endif /* ARDUINO_SPIFFS_H_ */
