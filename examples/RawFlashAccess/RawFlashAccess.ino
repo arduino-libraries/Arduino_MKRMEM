@@ -10,7 +10,7 @@
  * INCLUDE
  **************************************************************************************/
 
-#include "MKRMEM.h"
+#include <Arduino_MKRMEM.h>
 
 #undef max
 #undef min
