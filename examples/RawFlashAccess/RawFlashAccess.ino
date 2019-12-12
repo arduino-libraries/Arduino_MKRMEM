@@ -42,12 +42,33 @@ void setup()
   snprintf(msg, sizeof(msg), "ID: %02X %02X %02X", id.manufacturer_id, id.memory_type, id.capacity);
   Serial.println(msg);
 
-  /* Perform a complete chip erase (may last a little while) */
-  memory.eraseChip();
 
   std::array<uint8_t, 256> data_write = {0},
                            data_read  = {0};
+
+  /**************************************************************************************
+   * CHIP ERASE
+   **************************************************************************************/
   
+  Serial.println("Erasing chip");
+  
+  memory.eraseChip();
+  
+  memory.read(0x000100, data_read.data(), data_read.size());
+  
+  if(std::all_of(data_read.begin(), data_read.end(), [](uint8_t const elem) { return (elem == 0xFF); })) {
+    Serial.println("Comparison OK");
+  } else {
+    Serial.println("Comparison FAIL");
+  }
+  printArray("RD: ", data_read);
+
+  /**************************************************************************************
+   * PAGE PROGRAM
+   **************************************************************************************/
+
+  Serial.println("Programming page");
+
   /* Initialize data */
   std::transform(data_write.begin(), data_write.end(), data_write.begin(),
                 [](uint8_t const elem)
@@ -55,23 +76,25 @@ void setup()
                   static uint8_t i = 0;
                   return i++;
                 });
-  
-  printArray("WR: ", data_write);
 
-  /* Write data to chip to first block */
   memory.programPage(0x000100, data_write.data(), data_write.size());
+  memory.read       (0x000100, data_read.data(),  data_read.size());
 
-  /* Read data back in another array */
-  memory.read(0x000100, data_read.data(), data_read.size());
+  printArray("WR: ", data_write);
   printArray("RD: ", data_read);
 
-  /* Compare the two data buffers */
   if(std::equal(data_write.begin(), data_write.end(), data_read.begin())) {
     Serial.println("Comparison OK");
   } else {
     Serial.println("Comparison FAIL");
   }
 
+  /**************************************************************************************
+   * SECTOR ERASE
+   **************************************************************************************/
+
+  Serial.println("Sector erase");
+  
   /* Erase the whole first sector (4 kB) */
   memory.eraseSector(0x000000);
 
