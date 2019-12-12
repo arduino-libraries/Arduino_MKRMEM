@@ -8,19 +8,17 @@
 #ifndef SPIFFS_CONFIG_H_
 #define SPIFFS_CONFIG_H_
 
-// ----------- 8< ------------
-// Following includes are for the linux test build of spiffs
-// These may/should/must be removed/altered/replaced in your target
-#include "params_test.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stddef.h>
-#include <unistd.h>
-#ifdef _SPIFFS_TEST
-#include "testrunner.h"
-#endif
-// ----------- >8 ------------
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>
+
+typedef int32_t  s32_t;
+typedef uint32_t u32_t;
+typedef int16_t  s16_t;
+typedef uint16_t u16_t;
+typedef int8_t   s8_t;
+typedef uint8_t  u8_t;
 
 // compile time switches
 
@@ -102,7 +100,7 @@
 
 // Enable/disable statistics on caching. Debug/test purpose only.
 #ifndef  SPIFFS_CACHE_STATS
-#define SPIFFS_CACHE_STATS              1
+#define SPIFFS_CACHE_STATS              0
 #endif
 #endif
 
@@ -119,7 +117,7 @@
 
 // Enable/disable statistics on gc. Debug/test purpose only.
 #ifndef SPIFFS_GC_STATS
-#define SPIFFS_GC_STATS                 1
+#define SPIFFS_GC_STATS                 0
 #endif
 
 // Garbage collecting examines all pages in a block which and sums up
@@ -177,7 +175,7 @@
 // not on mount point. If not, SPIFFS_format must be called prior to mounting
 // again.
 #ifndef SPIFFS_USE_MAGIC
-#define SPIFFS_USE_MAGIC                (0)
+#define SPIFFS_USE_MAGIC                (1)
 #endif
 
 #if SPIFFS_USE_MAGIC
@@ -187,7 +185,7 @@
 // be accepted for mounting with a configuration defining the filesystem as 2
 // megabytes.
 #ifndef SPIFFS_USE_MAGIC_LENGTH
-#define SPIFFS_USE_MAGIC_LENGTH         (0)
+#define SPIFFS_USE_MAGIC_LENGTH         (1)
 #endif
 #endif
 
@@ -207,17 +205,17 @@
 // on the target. This will reduce calculations, flash and memory accesses.
 // Parts of configuration must be defined below instead of at time of mount.
 #ifndef SPIFFS_SINGLETON
-#define SPIFFS_SINGLETON 0
+#define SPIFFS_SINGLETON 1
 #endif
 
 #if SPIFFS_SINGLETON
 // Instead of giving parameters in config struct, singleton build must
 // give parameters in defines below.
 #ifndef SPIFFS_CFG_PHYS_SZ
-#define SPIFFS_CFG_PHYS_SZ(ignore)        (1024*1024*2)
+#define SPIFFS_CFG_PHYS_SZ(ignore)        (4096 * 16 * 32)
 #endif
 #ifndef SPIFFS_CFG_PHYS_ERASE_SZ
-#define SPIFFS_CFG_PHYS_ERASE_SZ(ignore)  (65536)
+#define SPIFFS_CFG_PHYS_ERASE_SZ(ignore)  (4096)
 #endif
 #ifndef SPIFFS_CFG_PHYS_ADDR
 #define SPIFFS_CFG_PHYS_ADDR(ignore)      (0)
@@ -226,7 +224,7 @@
 #define SPIFFS_CFG_LOG_PAGE_SZ(ignore)    (256)
 #endif
 #ifndef SPIFFS_CFG_LOG_BLOCK_SZ
-#define SPIFFS_CFG_LOG_BLOCK_SZ(ignore)   (65536)
+#define SPIFFS_CFG_LOG_BLOCK_SZ(ignore)   (4096)
 #endif
 #endif
 
