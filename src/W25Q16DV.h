@@ -77,7 +77,7 @@ class W25Q16DV
 
 public:
 
-  W25Q16DV(int const cs_pin = MKRMEM_W25Q16DV_CS_PIN);
+  W25Q16DV(int const cs_pin);
 
   void begin();
 
@@ -105,5 +105,11 @@ private:
   void    enableWrite();
 
 };
+
+/**************************************************************************************
+ * EXTERN DEFINITION
+ **************************************************************************************/
+
+extern W25Q16DV w25q16dv;
 
 #endif /* ARDUINO_W25Q16DV_H_ */

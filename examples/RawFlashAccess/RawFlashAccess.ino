@@ -18,12 +18,6 @@
 #include <algorithm>
 
 /**************************************************************************************
- * GLOBAL VARIABLES
- **************************************************************************************/
-
-W25Q16DV memory;
-
-/**************************************************************************************
  * SETUP/LOOP
  **************************************************************************************/
 
@@ -34,9 +28,9 @@ void setup()
   unsigned long const start = millis();
   for(unsigned long now = millis(); !Serial && ((now - start) < 5000); now = millis()) { };
   
-  memory.begin();
+  w25q16dv.begin();
   
-  W25Q16DV_Id const id = memory.readId();
+  W25Q16DV_Id const id = w25q16dv.readId();
 
   char msg[32] = {0};
   snprintf(msg, sizeof(msg), "ID: %02X %02X %02X", id.manufacturer_id, id.memory_type, id.capacity);
@@ -52,9 +46,9 @@ void setup()
   
   Serial.println("Erasing chip");
   
-  memory.eraseChip();
+  w25q16dv.eraseChip();
   
-  memory.read(0x000100, data_read.data(), data_read.size());
+  w25q16dv.read(0x000100, data_read.data(), data_read.size());
   
   if(std::all_of(data_read.begin(), data_read.end(), [](uint8_t const elem) { return (elem == 0xFF); })) {
     Serial.println("Comparison OK");
@@ -77,8 +71,8 @@ void setup()
                   return i++;
                 });
 
-  memory.programPage(0x000100, data_write.data(), data_write.size());
-  memory.read       (0x000100, data_read.data(),  data_read.size());
+  w25q16dv.programPage(0x000100, data_write.data(), data_write.size());
+  w25q16dv.read       (0x000100, data_read.data(),  data_read.size());
 
   printArray("WR: ", data_write);
   printArray("RD: ", data_read);
@@ -96,13 +90,13 @@ void setup()
   Serial.println("Sector erase");
   
   /* Erase the whole first sector (4 kB) */
-  memory.eraseSector(0x000000);
+  w25q16dv.eraseSector(0x000000);
 
   /* Set the comparison buffer to 0xFF since we now need to compare if every value is 0xFF */
   std::fill(data_write.begin(), data_write.end(), 0xFF);
 
   /* Read the data */
-  memory.read(0x000100, data_read.data(), data_read.size());
+  w25q16dv.read(0x000100, data_read.data(), data_read.size());
   printArray("RD: ", data_read);
 
   /* Compare the two data buffers */

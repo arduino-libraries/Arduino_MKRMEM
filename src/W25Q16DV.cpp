@@ -170,3 +170,9 @@ void W25Q16DV::enableWrite()
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::WriteEnable));
   deselect();
 }
+
+/**************************************************************************************
+ * EXTERN DECLARATION
+ **************************************************************************************/
+
+W25Q16DV w25q16dv(MKRMEM_W25Q16DV_CS_PIN);
