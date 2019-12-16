@@ -72,12 +72,12 @@ static int const MKRMEM_W25Q16DV_CS_PIN = 5;
  * CLASS DECLARATION
  **************************************************************************************/
 
-class W25Q16DV
+class Arduino_W25Q16DV
 {
 
 public:
 
-  W25Q16DV(int const cs_pin);
+  Arduino_W25Q16DV(int const cs_pin);
 
   void begin();
 
@@ -110,6 +110,6 @@ private:
  * EXTERN DEFINITION
  **************************************************************************************/
 
-extern W25Q16DV w25q16dv;
+extern Arduino_W25Q16DV w25q16dv;
 
 #endif /* ARDUINO_W25Q16DV_H_ */

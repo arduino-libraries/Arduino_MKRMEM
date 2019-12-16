@@ -22,7 +22,7 @@
 
 #include "Arduino_SPIFFS.h"
 
-#include "W25Q16DV.h"
+#include "Arduino_W25Q16DV.h"
 
 /**************************************************************************************
  * INTERNAL FUNCTION DECLARATION

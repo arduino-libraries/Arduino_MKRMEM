@@ -20,7 +20,7 @@
  * INCLUDE
  **************************************************************************************/
 
-#include "W25Q16DV.h"
+#include "Arduino_W25Q16DV.h"
 
 #include <SPI.h>
 
@@ -28,7 +28,7 @@
  * CTOR/DTOR
  **************************************************************************************/
 
-W25Q16DV::W25Q16DV(int const cs_pin)
+Arduino_W25Q16DV::Arduino_W25Q16DV(int const cs_pin)
 : _cs_pin(cs_pin)
 {
 
@@ -38,14 +38,14 @@ W25Q16DV::W25Q16DV(int const cs_pin)
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
 
-void W25Q16DV::begin()
+void Arduino_W25Q16DV::begin()
 {
   SPI.begin();
   pinMode(_cs_pin, OUTPUT);
   deselect();
 }
 
-W25Q16DV_Id W25Q16DV::readId()
+W25Q16DV_Id Arduino_W25Q16DV::readId()
 {
   W25Q16DV_Id id;
   
@@ -59,14 +59,14 @@ W25Q16DV_Id W25Q16DV::readId()
   return id;
 }
 
-bool W25Q16DV::isBusy()
+bool Arduino_W25Q16DV::isBusy()
 {
   W25Q16DV_StatusReg1 status_reg_1;
   status_reg_1.byte = readStatusReg1();
   return (status_reg_1.bit.BUSY == 1);
 }
 
-void W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const size)
+void Arduino_W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const size)
 {
   while(isBusy()) { delayMicroseconds(1); }
 
@@ -87,7 +87,7 @@ void W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const size)
   deselect();
 }
 
-void W25Q16DV::programPage(uint32_t const addr, uint8_t const * buf, uint32_t const size)
+void Arduino_W25Q16DV::programPage(uint32_t const addr, uint8_t const * buf, uint32_t const size)
 {
   while(isBusy()) { delayMicroseconds(1); }
 
@@ -108,7 +108,7 @@ void W25Q16DV::programPage(uint32_t const addr, uint8_t const * buf, uint32_t co
   deselect();
 }
 
-void W25Q16DV::eraseSector(uint32_t const addr)
+void Arduino_W25Q16DV::eraseSector(uint32_t const addr)
 {
   while(isBusy()) { delayMicroseconds(1); }
 
@@ -124,7 +124,7 @@ void W25Q16DV::eraseSector(uint32_t const addr)
   deselect();
 }
 
-void W25Q16DV::eraseChip()
+void Arduino_W25Q16DV::eraseChip()
 {
   while(isBusy()) { delayMicroseconds(1); }
 
@@ -142,17 +142,17 @@ void W25Q16DV::eraseChip()
  * PRIVATE MEMBER FUNCTIONS
  **************************************************************************************/
 
-void W25Q16DV::select()
+void Arduino_W25Q16DV::select()
 {
   digitalWrite(_cs_pin, LOW);
 }
 
-void W25Q16DV::deselect()
+void Arduino_W25Q16DV::deselect()
 {
   digitalWrite(_cs_pin, HIGH);
 }
 
-uint8_t W25Q16DV::readStatusReg1()
+uint8_t Arduino_W25Q16DV::readStatusReg1()
 {
   select();
   /* Command */
@@ -164,7 +164,7 @@ uint8_t W25Q16DV::readStatusReg1()
   return status_reg_1;
 }
 
-void W25Q16DV::enableWrite()
+void Arduino_W25Q16DV::enableWrite()
 {
   select();
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::WriteEnable));
@@ -175,4 +175,4 @@ void W25Q16DV::enableWrite()
  * EXTERN DECLARATION
  **************************************************************************************/
 
-W25Q16DV w25q16dv(MKRMEM_W25Q16DV_CS_PIN);
+Arduino_W25Q16DV w25q16dv(MKRMEM_W25Q16DV_CS_PIN);
