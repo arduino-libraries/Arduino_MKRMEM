@@ -29,7 +29,7 @@
  * CLASS DECLARATION
  **************************************************************************************/
 
-class SPIFFS
+class Arduino_SPIFFS
 {
 public:
 

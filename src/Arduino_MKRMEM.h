@@ -23,7 +23,7 @@
  * INCLUDE
  **************************************************************************************/
 
-#include "SPIFFS.h"
 #include "W25Q16DV.h"
+#include "Arduino_SPIFFS.h"
 
 #endif /* MKRMEM_H_ */
