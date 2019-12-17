@@ -55,8 +55,8 @@ public:
 
   inline s32_t       remove   (const char *path)                                      { return SPIFFS_remove(&_fs, path); }
   inline s32_t       fremove  (spiffs_file fh)                                        { return SPIFFS_fremove(&_fs, fh); }
-  inline s32_t       stat     (const char *path, spiffs_stat *s)                      { return SPIFFS_stat(&_fs, path, s); }
-  inline s32_t       fstat    (spiffs_file fh, spiffs_stat *s)                        { return SPIFFS_fstat(&_fs, fh, s); }
+  inline s32_t       stat     (const char *path, spiffs_stat &s)                      { return SPIFFS_stat(&_fs, path, &s); }
+  inline s32_t       fstat    (spiffs_file fh, spiffs_stat &s)                        { return SPIFFS_fstat(&_fs, fh, &s); }
   inline s32_t       fflush   (spiffs_file fh)                                        { return SPIFFS_fflush(&_fs, fh); }
   inline s32_t       rename   (const char *old, const char *newPath)                  { return SPIFFS_rename(&_fs, old, newPath); }
 
