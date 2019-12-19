@@ -1,0 +1,75 @@
+#######################################
+# Syntax Coloring Map For ArduinoCloudThing
+#######################################
+
+#######################################
+# Class (KEYWORD1)
+#######################################
+
+Arduino_SPIFFS	KEYWORD1
+Arduino_W25Q16DV	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+#######################################
+# Arduino_SPIFFS
+#######################################
+mount	KEYWORD2
+mounted	KEYWORD2
+unmount	KEYWORD2
+format	KEYWORD2
+check	KEYWORD2
+info	KEYWORD2
+err	KEYWORD2
+clearerr	KEYWORD2
+create	KEYWORD2
+open	KEYWORD2
+read	KEYWORD2
+write	KEYWORD2
+lseek	KEYWORD2
+eof	KEYWORD2
+tell	KEYWORD2
+close	KEYWORD2
+remove	KEYWORD2
+fremove	KEYWORD2
+stat	KEYWORD2
+fstat	KEYWORD2
+fflush	KEYWORD2
+rename	KEYWORD2
+opendir	KEYWORD2
+closedir	KEYWORD2
+readdir	KEYWORD2
+
+#######################################
+# Arduino_W25Q16DV
+#######################################
+readId	KEYWORD2
+isBusy	KEYWORD2
+read	KEYWORD2
+programPage	KEYWORD2
+eraseSector	KEYWORD2
+eraseChip	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+SPIFFS_APPEND	LITERAL1
+SPIFFS_TRUNC	LITERAL1
+SPIFFS_CREAT	LITERAL1
+SPIFFS_RDONLY	LITERAL1
+SPIFFS_WRONLY	LITERAL1
+SPIFFS_RDWR	LITERAL1
+SPIFFS_DIRECT	LITERAL1
+SPIFFS_EXCL	LITERAL1
+
+SPIFFS_SEEK_SET	LITERAL1
+SPIFFS_SEEK_CUR	LITERAL1
+SPIFFS_SEEK_END	LITERAL1
+
+SPIFFS_TYPE_FILE	LITERAL1
+SPIFFS_TYPE_DIR	LITERAL1
+SPIFFS_TYPE_HARD_LINK	LITERAL1
+SPIFFS_TYPE_SOFT_LINK	LITERAL1
