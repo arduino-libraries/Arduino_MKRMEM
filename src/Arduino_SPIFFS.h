@@ -44,8 +44,8 @@ public:
   inline s32_t       err     ()                                                       { return SPIFFS_errno(&_fs); }
   inline void        clearerr()                                                       { SPIFFS_clearerr(&_fs); }
   
-  inline s32_t       create  (const char *path, spiffs_mode mode)                     { return SPIFFS_creat(&_fs, path, mode); }
-  inline spiffs_file open    (const char *path, spiffs_flags flags, spiffs_mode mode) { return SPIFFS_open(&_fs, path, flags, mode); }
+  inline s32_t       create  (const char *path)                                       { return SPIFFS_creat(&_fs, path, 0); }
+  inline spiffs_file open    (const char *path, spiffs_flags flags)                   { return SPIFFS_open(&_fs, path, flags, 0); }
   inline s32_t       read    (spiffs_file fh, void *buf, s32_t len)                   { return SPIFFS_read(&_fs, fh, buf, len); }
   inline s32_t       write   (spiffs_file fh, void *buf, s32_t len)                   { return SPIFFS_write(&_fs, fh, buf, len); }
   inline s32_t       lseek   (spiffs_file fh, s32_t offs, int whence)                 { return SPIFFS_lseek(&_fs, fh, offs, whence); }
