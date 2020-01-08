@@ -70,8 +70,6 @@ void Arduino_W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const s
 {
   while(isBusy()) { delayMicroseconds(1); }
 
-  isBusy();
-  
   select();
   /* Command */
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadData));
