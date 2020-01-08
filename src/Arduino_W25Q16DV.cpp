@@ -25,6 +25,13 @@
 #include <SPI.h>
 
 /**************************************************************************************
+ * CONSTANTS
+ **************************************************************************************/
+
+static uint32_t const W25Q16DV_MAX_SPI_CLK = 104 * 1000 * 1000; /* 104 MHz */
+static SPISettings const W25Q16DV_SPI_SETTINGS{W25Q16DV_MAX_SPI_CLK, MSBFIRST, SPI_MODE0};
+
+/**************************************************************************************
  * CTOR/DTOR
  **************************************************************************************/
 
@@ -50,6 +57,7 @@ W25Q16DV_Id Arduino_W25Q16DV::readId()
   W25Q16DV_Id id;
   
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadJedecId));
   id.manufacturer_id = SPI.transfer(0);
   id.memory_type     = SPI.transfer(0);
@@ -71,6 +79,7 @@ void Arduino_W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const s
   while(isBusy()) { delayMicroseconds(1); }
 
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadData));
   /* Address */
@@ -92,6 +101,7 @@ void Arduino_W25Q16DV::programPage(uint32_t const addr, uint8_t const * buf, uin
   enableWrite();
 
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::PageProgram));
   /* Address */
@@ -113,6 +123,7 @@ void Arduino_W25Q16DV::eraseSector(uint32_t const addr)
   enableWrite();
 
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::SectorErase));
   /* Address */
@@ -129,6 +140,7 @@ void Arduino_W25Q16DV::eraseChip()
   enableWrite();
 
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ChipErase));
   deselect();
 
@@ -153,6 +165,7 @@ void Arduino_W25Q16DV::deselect()
 uint8_t Arduino_W25Q16DV::readStatusReg1()
 {
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadStatusReg1));
   /* Read Status Reg 1 */
@@ -165,6 +178,7 @@ uint8_t Arduino_W25Q16DV::readStatusReg1()
 void Arduino_W25Q16DV::enableWrite()
 {
   select();
+  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
   SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::WriteEnable));
   deselect();
 }
