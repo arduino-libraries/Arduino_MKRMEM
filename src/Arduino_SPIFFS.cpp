@@ -36,7 +36,7 @@ s32_t w25q16_spi_erase(u32_t addr, u32_t size);
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
 
-s32_t Arduino_SPIFFS::mount()
+int Arduino_SPIFFS::mount()
 {
   spiffs_config cfg;
     

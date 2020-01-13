@@ -23,10 +23,20 @@
  * INCLUDE
  **************************************************************************************/
 
+#include <Arduino.h>
+
 extern "C"
 {
 #include "spiffs.h"
 }
+
+/**************************************************************************************
+ * STATIC ASSERTIONS
+ **************************************************************************************/
+
+static_assert(sizeof(u8_t) == sizeof(byte), "Arduino SPIFFS Wrapper - u8_t != byte - possible loss of data");
+static_assert(sizeof(s32_t) == sizeof(int), "Arduino SPIFFS Wrapper - s32_t != int32_t - possible loss of data");
+static_assert(sizeof(u32_t) == sizeof(unsigned int), "Arduino SPIFFS Wrapper - s32_t != int32_t - possible loss of data");
 
 /**************************************************************************************
  * CLASS DECLARATION
@@ -36,35 +46,35 @@ class Arduino_SPIFFS
 {
 public:
 
-         s32_t       mount   ();
-  inline u8_t        mounted ()                                                       { return SPIFFS_mounted(&_fs); }
+         int         mount   ();
+  inline byte        mounted ()                                                       { return SPIFFS_mounted(&_fs); }
   inline void        unmount ()                                                       { SPIFFS_unmount(&_fs); }
   
-  inline s32_t       format  ()                                                       { return SPIFFS_format(&_fs); }
-  inline s32_t       check   ()                                                       { return SPIFFS_check(&_fs); }
-  inline s32_t       info    (u32_t & total, u32_t & used)                            { return SPIFFS_info(&_fs, &total, &used); }
+  inline int         format  ()                                                       { return SPIFFS_format(&_fs); }
+  inline int         check   ()                                                       { return SPIFFS_check(&_fs); }
+  inline int         info    (unsigned int & total, unsigned int & used)              { return SPIFFS_info(&_fs, reinterpret_cast<u32_t*>(&total), reinterpret_cast<u32_t*>(&used)); }
 
-  inline s32_t       err     ()                                                       { return SPIFFS_errno(&_fs); }
+  inline int         err     ()                                                       { return SPIFFS_errno(&_fs); }
   inline void        clearerr()                                                       { SPIFFS_clearerr(&_fs); }
   
-  inline s32_t       create  (const char *path)                                       { return SPIFFS_creat(&_fs, path, 0); }
+  inline int         create  (const char *path)                                       { return SPIFFS_creat(&_fs, path, 0); }
   inline spiffs_file open    (const char *path, spiffs_flags flags)                   { return SPIFFS_open(&_fs, path, flags, 0); }
-  inline s32_t       read    (spiffs_file fh, void *buf, s32_t len)                   { return SPIFFS_read(&_fs, fh, buf, len); }
-  inline s32_t       write   (spiffs_file fh, void *buf, s32_t len)                   { return SPIFFS_write(&_fs, fh, buf, len); }
-  inline s32_t       lseek   (spiffs_file fh, s32_t offs, int whence)                 { return SPIFFS_lseek(&_fs, fh, offs, whence); }
-  inline s32_t       eof     (spiffs_file fh)                                         { return SPIFFS_eof(&_fs, fh); }
-  inline s32_t       tell    (spiffs_file fh)                                         { return SPIFFS_tell(&_fs, fh); }
-  inline s32_t       close   (spiffs_file fh)                                         { return SPIFFS_close(&_fs, fh); }
+  inline int         read    (spiffs_file fh, void *buf, int   len)                   { return SPIFFS_read(&_fs, fh, buf, len); }
+  inline int         write   (spiffs_file fh, void *buf, int   len)                   { return SPIFFS_write(&_fs, fh, buf, len); }
+  inline int         lseek   (spiffs_file fh, int   offs, int whence)                 { return SPIFFS_lseek(&_fs, fh, offs, whence); }
+  inline int         eof     (spiffs_file fh)                                         { return SPIFFS_eof(&_fs, fh); }
+  inline int         tell    (spiffs_file fh)                                         { return SPIFFS_tell(&_fs, fh); }
+  inline int         close   (spiffs_file fh)                                         { return SPIFFS_close(&_fs, fh); }
 
-  inline s32_t       remove   (const char *path)                                      { return SPIFFS_remove(&_fs, path); }
-  inline s32_t       fremove  (spiffs_file fh)                                        { return SPIFFS_fremove(&_fs, fh); }
-  inline s32_t       stat     (const char *path, spiffs_stat &s)                      { return SPIFFS_stat(&_fs, path, &s); }
-  inline s32_t       fstat    (spiffs_file fh, spiffs_stat &s)                        { return SPIFFS_fstat(&_fs, fh, &s); }
-  inline s32_t       fflush   (spiffs_file fh)                                        { return SPIFFS_fflush(&_fs, fh); }
-  inline s32_t       rename   (const char *old, const char *newPath)                  { return SPIFFS_rename(&_fs, old, newPath); }
+  inline int         remove   (const char *path)                                      { return SPIFFS_remove(&_fs, path); }
+  inline int         fremove  (spiffs_file fh)                                        { return SPIFFS_fremove(&_fs, fh); }
+  inline int         stat     (const char *path, spiffs_stat &s)                      { return SPIFFS_stat(&_fs, path, &s); }
+  inline int         fstat    (spiffs_file fh, spiffs_stat &s)                        { return SPIFFS_fstat(&_fs, fh, &s); }
+  inline int         fflush   (spiffs_file fh)                                        { return SPIFFS_fflush(&_fs, fh); }
+  inline int         rename   (const char *old, const char *newPath)                  { return SPIFFS_rename(&_fs, old, newPath); }
 
   inline spiffs_DIR *           opendir (const char *name, spiffs_DIR *d)             { return SPIFFS_opendir(&_fs, name, d); }
-  inline s32_t                  closedir(spiffs_DIR *d)                               { return SPIFFS_closedir(d); }
+  inline int                    closedir(spiffs_DIR *d)                               { return SPIFFS_closedir(d); }
   inline struct spiffs_dirent * readdir (spiffs_DIR *d, struct spiffs_dirent *e)      { return SPIFFS_readdir(d, e); }
 
 

@@ -56,8 +56,8 @@ void setup() {
    */
   spiffs_file file = filesystem.open("fox.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
 
-  s32_t const bytes_to_write = strlen(PANGRAM);
-  s32_t const bytes_written = filesystem.write(file, (void *)PANGRAM, bytes_to_write);
+  int const bytes_to_write = strlen(PANGRAM);
+  int const bytes_written = filesystem.write(file, (void *)PANGRAM, bytes_to_write);
   
   if(bytes_written != bytes_to_write) {
     Serial.println("write() failed with error code "); Serial.println(filesystem.err()); return;
@@ -70,8 +70,8 @@ void setup() {
 
 
   Serial.println("Retrieving filesystem info ...");
-  uint32_t bytes_total = 0,
-           bytes_used = 0;
+  unsigned int bytes_total = 0,
+               bytes_used = 0;
   if(SPIFFS_OK != filesystem.info(bytes_total, bytes_used)) {
     Serial.println("check() failed with error code "); Serial.println(filesystem.err()); return;
   } else {
@@ -85,7 +85,7 @@ void setup() {
   file = filesystem.open("fox.txt", SPIFFS_RDONLY);
 
   char buf[64] = {0};
-  s32_t const bytes_read = filesystem.read(file, buf, sizeof(buf));
+  int const bytes_read = filesystem.read(file, buf, sizeof(buf));
   buf[bytes_read] = '\0';
   
   filesystem.close(file);

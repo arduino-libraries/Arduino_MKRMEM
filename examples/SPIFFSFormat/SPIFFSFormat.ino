@@ -35,7 +35,7 @@ void setup()
   flash.eraseChip();
 
   Serial.println("Mounting ...");
-  int32_t res = filesystem.mount();
+  int res = filesystem.mount();
   if(res != SPIFFS_OK && res != SPIFFS_ERR_NOT_A_FS) {
     Serial.println("mount() failed with error code "); Serial.println(res); return;
   }
@@ -62,8 +62,8 @@ void setup()
   }
 
   Serial.println("Retrieving filesystem info ...");
-  uint32_t bytes_total = 0,
-           bytes_used = 0;
+  unsigned int bytes_total = 0,
+               bytes_used  = 0;
   res = filesystem.info(bytes_total, bytes_used);
   if(res != SPIFFS_OK) {
     Serial.println("check() failed with error code "); Serial.println(res); return;
