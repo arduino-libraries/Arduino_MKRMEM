@@ -187,4 +187,4 @@ void Arduino_W25Q16DV::enableWrite()
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_W25Q16DV w25q16dv(MKRMEM_W25Q16DV_CS_PIN);
+Arduino_W25Q16DV flash(MKRMEM_W25Q16DV_CS_PIN);

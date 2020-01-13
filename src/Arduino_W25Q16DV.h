@@ -110,6 +110,6 @@ private:
  * EXTERN DEFINITION
  **************************************************************************************/
 
-extern Arduino_W25Q16DV w25q16dv;
+extern Arduino_W25Q16DV flash;
 
 #endif /* ARDUINO_W25Q16DV_H_ */

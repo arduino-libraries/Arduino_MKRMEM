@@ -29,10 +29,10 @@ void setup()
   unsigned long const start = millis();
   for(unsigned long now = millis(); !Serial && ((now - start) < 5000); now = millis()) { };
   
-  w25q16dv.begin();
+  flash.begin();
 
   Serial.println("Erasing chip ...");
-  w25q16dv.eraseChip();
+  flash.eraseChip();
 
   Serial.println("Mounting ...");
   int32_t res = filesystem.mount();

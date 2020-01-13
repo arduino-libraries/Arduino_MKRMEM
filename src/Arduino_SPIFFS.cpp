@@ -60,18 +60,18 @@ s32_t Arduino_SPIFFS::mount()
 
 s32_t w25q16_spi_read(u32_t addr, u32_t size, u8_t * buf)
 {
-  w25q16dv.read(addr, buf, size);
+  flash.read(addr, buf, size);
   return SPIFFS_OK;
 }
 
 s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf)
 {
-  w25q16dv.programPage(addr, buf, size);
+  flash.programPage(addr, buf, size);
   return SPIFFS_OK;
 }
 
 s32_t w25q16_spi_erase(u32_t addr, u32_t size)
 {
-  w25q16dv.eraseSector(addr);
+  flash.eraseSector(addr);
   return SPIFFS_OK;
 }
