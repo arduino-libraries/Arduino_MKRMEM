@@ -26,6 +26,7 @@
 #include <Arduino.h>
 
 #include "Arduino_SPIFFS_File.h"
+#include "Arduino_SPIFFS_Directory.h"
 
 extern "C"
 {
@@ -64,9 +65,7 @@ public:
   inline int         remove  (const char *path)                                       { return SPIFFS_remove(&_fs, path); }
   inline int         rename  (const char *old, const char *newPath)                   { return SPIFFS_rename(&_fs, old, newPath); }
 
-  inline spiffs_DIR *           opendir (const char *name, spiffs_DIR *d)             { return SPIFFS_opendir(&_fs, name, d); }
-  inline int                    closedir(spiffs_DIR *d)                               { return SPIFFS_closedir(d); }
-  inline struct spiffs_dirent * readdir (spiffs_DIR *d, struct spiffs_dirent *e)      { return SPIFFS_readdir(d, e); }
+         Directory   opendir (const char *name);
 
 
 private:

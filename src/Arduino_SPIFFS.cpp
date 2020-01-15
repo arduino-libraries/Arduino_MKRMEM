@@ -60,6 +60,13 @@ File Arduino_SPIFFS::open(const char *path, spiffs_flags flags)
   return File(&_fs, fh);
 }
 
+Directory Arduino_SPIFFS::opendir(const char *name)
+{
+  spiffs_DIR d;
+  SPIFFS_opendir(&_fs, name, &d);
+  return Directory::create(&d);
+}
+
 /**************************************************************************************
  * INTERNAL FUNCTION DEFINITION
  **************************************************************************************/
