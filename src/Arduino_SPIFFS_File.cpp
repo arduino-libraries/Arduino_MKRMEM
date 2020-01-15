@@ -37,6 +37,16 @@ Arduino_SPIFFS_File::Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh)
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
 
+String Arduino_SPIFFS_File::name()
+{
+  spiffs_stat stat;
+  if(SPIFFS_OK == SPIFFS_fstat(_fs, _fh, &stat)) {
+    return String(reinterpret_cast<const char *>(&(stat.name)));
+  } else {
+    return String("ERROR");
+  }
+}
+
 Arduino_SPIFFS_File Arduino_SPIFFS_File::operator = (Arduino_SPIFFS_File const & other)
 {
   _fs = other.getFs();

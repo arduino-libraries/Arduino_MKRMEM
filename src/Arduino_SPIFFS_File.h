@@ -23,6 +23,8 @@
  * INCLUDE
  **************************************************************************************/
 
+#include <Arduino.h>
+
 extern "C"
 {
 #include "spiffs.h"
@@ -39,6 +41,8 @@ public:
 
   Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh);
 
+
+  String     name  ();
   inline int read  (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
   inline int write (void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }
   inline int lseek (int offs, int whence) { return SPIFFS_lseek(_fs, _fh, offs, whence); }
