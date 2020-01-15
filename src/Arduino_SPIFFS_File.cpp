@@ -47,6 +47,11 @@ String Arduino_SPIFFS_File::name()
   }
 }
 
+Arduino_SPIFFS_File Arduino_SPIFFS_File::create(spiffs * fs, spiffs_file const fh)
+{
+  return Arduino_SPIFFS_File(fs, fh);
+}
+
 Arduino_SPIFFS_File Arduino_SPIFFS_File::operator = (Arduino_SPIFFS_File const & other)
 {
   _fs = other.getFs();

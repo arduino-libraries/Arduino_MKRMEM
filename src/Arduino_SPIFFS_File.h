@@ -39,9 +39,6 @@ class Arduino_SPIFFS_File
 
 public:
 
-  Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh);
-
-
   String     name  ();
   inline int read  (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
   inline int write (void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }
@@ -53,8 +50,10 @@ public:
   inline int flush ()                     { return SPIFFS_fflush(_fs, _fh); }
 
 
-  Arduino_SPIFFS_File operator = (Arduino_SPIFFS_File const & other);
+  static Arduino_SPIFFS_File create(spiffs * fs, spiffs_file const fh);
 
+
+  Arduino_SPIFFS_File operator = (Arduino_SPIFFS_File const & other);
   inline spiffs *    getFs() const { return _fs; }
   inline spiffs_file getFh() const { return _fh; }
 
@@ -63,6 +62,9 @@ private:
 
   spiffs * _fs;
   spiffs_file _fh;
+
+  Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh);
+
 
 };
 

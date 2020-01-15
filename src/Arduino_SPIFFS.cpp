@@ -57,7 +57,7 @@ int Arduino_SPIFFS::mount()
 File Arduino_SPIFFS::open(const char *path, spiffs_flags flags)
 {
   spiffs_file const fh = SPIFFS_open(&_fs, path, flags, 0);
-  return File(&_fs, fh);
+  return File::create(&_fs, fh);
 }
 
 Directory Arduino_SPIFFS::opendir(const char *name)
