@@ -63,10 +63,8 @@ public:
          File        open    (const char *path, spiffs_flags flags);
 
   inline int         remove   (const char *path)                                      { return SPIFFS_remove(&_fs, path); }
-  inline int         fremove  (spiffs_file fh)                                        { return SPIFFS_fremove(&_fs, fh); }
   inline int         stat     (const char *path, spiffs_stat &s)                      { return SPIFFS_stat(&_fs, path, &s); }
   inline int         fstat    (spiffs_file fh, spiffs_stat &s)                        { return SPIFFS_fstat(&_fs, fh, &s); }
-  inline int         fflush   (spiffs_file fh)                                        { return SPIFFS_fflush(&_fs, fh); }
   inline int         rename   (const char *old, const char *newPath)                  { return SPIFFS_rename(&_fs, old, newPath); }
 
   inline spiffs_DIR *           opendir (const char *name, spiffs_DIR *d)             { return SPIFFS_opendir(&_fs, name, d); }

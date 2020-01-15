@@ -41,12 +41,15 @@ public:
 
   Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh);
 
-  inline int read (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
-  inline int write(void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }
-  inline int lseek(int offs, int whence) { return SPIFFS_lseek(_fs, _fh, offs, whence); }
-  inline int eof  ()                     { return SPIFFS_eof(_fs, _fh); }
-  inline int tell ()                     { return SPIFFS_tell(_fs, _fh); }
-  inline int close()                     { return SPIFFS_close(_fs, _fh); }
+  inline int read  (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
+  inline int write (void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }
+  inline int lseek (int offs, int whence) { return SPIFFS_lseek(_fs, _fh, offs, whence); }
+  inline int eof   ()                     { return SPIFFS_eof(_fs, _fh); }
+  inline int tell  ()                     { return SPIFFS_tell(_fs, _fh); }
+  inline int close ()                     { return SPIFFS_close(_fs, _fh); }
+  inline int remove()                     { return SPIFFS_fremove(_fs, _fh); }
+  inline int flush ()                     { return SPIFFS_fflush(_fs, _fh); }
+
 
   Arduino_SPIFFS_File operator = (Arduino_SPIFFS_File const & other);
 
