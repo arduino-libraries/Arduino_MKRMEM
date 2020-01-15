@@ -54,10 +54,10 @@ void setup() {
    * write only mode (SPIFFS_WRONLY ). If the file does exist
    * delete the existing content (SPIFFS_TRUNC).
    */
-  spiffs_file file = filesystem.open("fox.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
+  File file = filesystem.open("fox.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
 
   int const bytes_to_write = strlen(PANGRAM);
-  int const bytes_written = filesystem.write(file, (void *)PANGRAM, bytes_to_write);
+  int const bytes_written = file.write((void *)PANGRAM, bytes_to_write);
   
   if(bytes_written != bytes_to_write) {
     Serial.println("write() failed with error code "); Serial.println(filesystem.err()); return;
@@ -66,7 +66,7 @@ void setup() {
     Serial.println(" bytes written");
   }
 
-  filesystem.close(file);
+  file.close();
 
 
   Serial.println("Retrieving filesystem info ...");
@@ -85,10 +85,10 @@ void setup() {
   file = filesystem.open("fox.txt", SPIFFS_RDONLY);
 
   char buf[64] = {0};
-  int const bytes_read = filesystem.read(file, buf, sizeof(buf));
+  int const bytes_read = file.read(buf, sizeof(buf));
   buf[bytes_read] = '\0';
   
-  filesystem.close(file);
+  file.close();
   Serial.print("["); Serial.print(bytes_read); Serial.print("] ");
   Serial.println(buf);
 

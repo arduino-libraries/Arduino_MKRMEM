@@ -54,6 +54,12 @@ int Arduino_SPIFFS::mount()
                       0);
 }
 
+File Arduino_SPIFFS::open(const char *path, spiffs_flags flags)
+{
+  spiffs_file const fh = SPIFFS_open(&_fs, path, flags, 0);
+  return File(&_fs, fh);
+}
+
 /**************************************************************************************
  * INTERNAL FUNCTION DEFINITION
  **************************************************************************************/

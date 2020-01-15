@@ -25,6 +25,8 @@
 
 #include <Arduino.h>
 
+#include "Arduino_SPIFFS_File.h"
+
 extern "C"
 {
 #include "spiffs.h"
@@ -58,13 +60,7 @@ public:
   inline void        clearerr()                                                       { SPIFFS_clearerr(&_fs); }
   
   inline int         create  (const char *path)                                       { return SPIFFS_creat(&_fs, path, 0); }
-  inline spiffs_file open    (const char *path, spiffs_flags flags)                   { return SPIFFS_open(&_fs, path, flags, 0); }
-  inline int         read    (spiffs_file fh, void *buf, int   len)                   { return SPIFFS_read(&_fs, fh, buf, len); }
-  inline int         write   (spiffs_file fh, void *buf, int   len)                   { return SPIFFS_write(&_fs, fh, buf, len); }
-  inline int         lseek   (spiffs_file fh, int   offs, int whence)                 { return SPIFFS_lseek(&_fs, fh, offs, whence); }
-  inline int         eof     (spiffs_file fh)                                         { return SPIFFS_eof(&_fs, fh); }
-  inline int         tell    (spiffs_file fh)                                         { return SPIFFS_tell(&_fs, fh); }
-  inline int         close   (spiffs_file fh)                                         { return SPIFFS_close(&_fs, fh); }
+         File        open    (const char *path, spiffs_flags flags);
 
   inline int         remove   (const char *path)                                      { return SPIFFS_remove(&_fs, path); }
   inline int         fremove  (spiffs_file fh)                                        { return SPIFFS_fremove(&_fs, fh); }
