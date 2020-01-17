@@ -28,7 +28,9 @@
 
 Arduino_SPIFFS_DirectoryEntry::Arduino_SPIFFS_DirectoryEntry(spiffs_dirent const * dirent)
 {
-  memcpy(&_dirent, dirent, sizeof(_dirent));
+  if(dirent) {
+    memcpy(&_dirent, dirent, sizeof(_dirent));
+  }
 }
 
 /**************************************************************************************

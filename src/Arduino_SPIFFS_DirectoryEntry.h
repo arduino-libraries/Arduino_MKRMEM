@@ -39,6 +39,9 @@ class Arduino_SPIFFS_DirectoryEntry
 
 public:
 
+  Arduino_SPIFFS_DirectoryEntry() : Arduino_SPIFFS_DirectoryEntry(0) { }
+  Arduino_SPIFFS_DirectoryEntry(spiffs_dirent const * dirent);
+
 
   String name();
   bool   isFile();
@@ -55,8 +58,6 @@ public:
 private:
 
   spiffs_dirent _dirent;
-
-  Arduino_SPIFFS_DirectoryEntry(spiffs_dirent const * dirent);
 
 };
 
