@@ -30,7 +30,7 @@ void setup()
   
   flash.begin();
   
-  flash_Id const id = flash.readId();
+  W25Q16DV_Id const id = flash.readId();
 
   char msg[32] = {0};
   snprintf(msg, sizeof(msg), "ID: %02X %02X %02X", id.manufacturer_id, id.memory_type, id.capacity);
