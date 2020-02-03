@@ -78,7 +78,13 @@ public:
   inline int         remove  (const char *path)                                       { return SPIFFS_remove(&_fs, path); }
   inline int         rename  (const char *old, const char *newPath)                   { return SPIFFS_rename(&_fs, old, newPath); }
 
+  inline int         create  (String const & path)                                    { return create(path.c_str()); }
+  inline File        open    (String const & path, uint16_t const flags)              { return open(path.c_str(), flags); }
+  inline int         remove  (String const & path)                                    { return remove(path.c_str()); }
+  inline int         rename  (String const & old, String const & newPath)             { return rename(old.c_str(), newPath.c_str()); }
+
          Directory   opendir (const char *name);
+  inline Directory   opendir (String const & name)                                    { return opendir(name.c_str()); }
 
 
 private:
