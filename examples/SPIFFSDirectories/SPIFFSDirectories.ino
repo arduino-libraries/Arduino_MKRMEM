@@ -37,15 +37,20 @@ void setup()
     Serial.println("mount() failed with error code "); Serial.println(res); return;
   }
 
+  /* Note: SPIFFS is a flat file system, it doesn't have directories. */
+  File file_A = filesystem.open("/testfile_A.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
+  File file_B = filesystem.open("/testdir/testfile_B.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
+
+  Serial.println("opendir('/')");
   Directory dir = filesystem.opendir("/");
   DirEntry entry;
   while(dir.readdir(entry)) {
-    if     (entry.isFile())      Serial.print("F ");
-    else if(entry.isDirectory()) Serial.print("D ");
+    if     (entry.isFile())      Serial.print("  F ");
+    else if(entry.isDirectory()) Serial.print("  D ");
     Serial.print(entry.name());
     Serial.println();    
   }
-  
+
   Serial.println("Unmounting ...");
   filesystem.unmount();
 }
