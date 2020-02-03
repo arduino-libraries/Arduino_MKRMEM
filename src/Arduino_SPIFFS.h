@@ -92,7 +92,7 @@ public:
    * we allow Arduino_SPIFFS_File to be a 'friend' of
    * 'Arduino_SPIFFS'. Another alternative would be to
    * make those functions public but what would users do
-   * without the availabilty of a file handle?
+   * without the availability of a file handle?
    */
   friend class Arduino_SPIFFS_File; 
 
