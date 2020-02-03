@@ -34,6 +34,14 @@ extern "C"
  * CLASS DECLARATION
  **************************************************************************************/
 
+static int constexpr START   = SPIFFS_SEEK_SET; /* Start to seek from the beginning of the file                */
+static int constexpr CURRENT = SPIFFS_SEEK_CUR; /* Start to seek from the current position of the file pointer */
+static int constexpr END     = SPIFFS_SEEK_END; /* Start to seek from the end of the file                      */
+
+/**************************************************************************************
+ * CLASS DECLARATION
+ **************************************************************************************/
+
 class Arduino_SPIFFS_File
 {
 
