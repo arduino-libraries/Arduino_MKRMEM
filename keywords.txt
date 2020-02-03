@@ -8,6 +8,9 @@
 
 Arduino_SPIFFS	KEYWORD1
 Arduino_W25Q16DV	KEYWORD1
+File	KEYWORD1
+Directory	KEYWORD1
+DirEntry	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -55,6 +58,15 @@ eraseChip	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+APPEND	LITERAL1
+TRUNCATE	LITERAL1
+CREATE	LITERAL1
+READ_ONLY	LITERAL1
+WRITE_ONLY	LITERAL1
+READ_WRITE	LITERAL1
+DIRECT	LITERAL1
+EXCLUSIVE	LITERAL1
 
 SPIFFS_APPEND	LITERAL1
 SPIFFS_TRUNC	LITERAL1
