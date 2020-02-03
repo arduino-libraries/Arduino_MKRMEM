@@ -50,6 +50,7 @@ void setup()
     Serial.print(entry.name());
     Serial.println();    
   }
+  dir.closedir();
 
   Serial.println("Unmounting ...");
   filesystem.unmount();
