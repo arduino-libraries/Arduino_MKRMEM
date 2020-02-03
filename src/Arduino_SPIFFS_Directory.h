@@ -39,6 +39,9 @@ class Arduino_SPIFFS_Directory
 
 public:
 
+  ~Arduino_SPIFFS_Directory();
+
+
   bool closedir();
   bool readdir (DirEntry & dir_entry);
   

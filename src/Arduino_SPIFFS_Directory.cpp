@@ -31,6 +31,11 @@ Arduino_SPIFFS_Directory::Arduino_SPIFFS_Directory(spiffs_DIR const * dir)
   memcpy(&_dir, dir, sizeof(_dir));
 }
 
+Arduino_SPIFFS_Directory::~Arduino_SPIFFS_Directory()
+{
+  closedir();
+}
+
 /**************************************************************************************
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
