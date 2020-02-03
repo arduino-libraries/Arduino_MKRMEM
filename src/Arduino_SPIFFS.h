@@ -87,6 +87,16 @@ public:
   inline Directory   opendir (String const & name)                        { return opendir(name.c_str()); }
 
 
+  /* In order to allow access to the private functions
+   * read, write, lseek, eof, tell, close, remove, flush
+   * we allow Arduino_SPIFFS_File to be a 'friend' of
+   * 'Arduino_SPIFFS'. Another alternative would be to
+   * make those functions public but what would users do
+   * without the availabilty of a file handle?
+   */
+  friend class Arduino_SPIFFS_File; 
+
+
 private:
 
   spiffs _fs;
@@ -95,6 +105,22 @@ private:
   u8_t   _spiffs_fds[32*4];
   u8_t   _spiffs_cache_buf[(SPIFFS_CFG_LOG_PAGE_SZ(0)+32)*4];
 
+
+  inline int read  (spiffs_file fh, void * buf, int len)  { return SPIFFS_read(&_fs, fh, buf, len); }
+  inline int write (spiffs_file fh, void * buf, int len)  { return SPIFFS_write(&_fs, fh, buf, len); }
+  inline int lseek (spiffs_file fh, int offs, int whence) { return SPIFFS_lseek(&_fs, fh, offs, whence); }
+  inline int eof   (spiffs_file fh)                       { return SPIFFS_eof(&_fs, fh); }
+  inline int tell  (spiffs_file fh)                       { return SPIFFS_tell(&_fs, fh); }
+  inline int close (spiffs_file fh)                       { return SPIFFS_close(&_fs, fh); }
+  inline int remove(spiffs_file fh)                       { return SPIFFS_fremove(&_fs, fh); }
+  inline int flush (spiffs_file fh)                       { return SPIFFS_fflush(&_fs, fh); }
+
 };
+
+/**************************************************************************************
+ * EXTERN DEFINITION
+ **************************************************************************************/
+
+extern Arduino_SPIFFS filesystem;
 
 #endif /* ARDUINO_SPIFFS_H_ */

@@ -31,7 +31,7 @@ extern "C"
 }
 
 /**************************************************************************************
- * CLASS DECLARATION
+ * CONSTANTS
  **************************************************************************************/
 
 static int constexpr START   = SPIFFS_SEEK_SET; /* Start to seek from the beginning of the file                */
@@ -50,32 +50,28 @@ public:
   ~Arduino_SPIFFS_File();
 
 
-  String     name  ();
-  inline int read  (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
-  inline int write (void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }
-  inline int lseek (int offs, int whence) { return SPIFFS_lseek(_fs, _fh, offs, whence); }
-  inline int eof   ()                     { return SPIFFS_eof(_fs, _fh); }
-  inline int tell  ()                     { return SPIFFS_tell(_fs, _fh); }
-  inline int close ()                     { return SPIFFS_close(_fs, _fh); }
-  inline int remove()                     { return SPIFFS_fremove(_fs, _fh); }
-  inline int flush ()                     { return SPIFFS_fflush(_fs, _fh); }
+  int read  (void * buf, int len);
+  int write (void * buf, int len);
+  int lseek (int offs, int whence);
+  int eof   ();
+  int tell  ();
+  int close ();
+  int remove();
+  int flush ();
 
 
-  static Arduino_SPIFFS_File create(spiffs * fs, spiffs_file const fh);
+  static Arduino_SPIFFS_File create(spiffs_file const fh);
 
 
   Arduino_SPIFFS_File operator = (Arduino_SPIFFS_File const & other);
-  inline spiffs *    getFs() const { return _fs; }
   inline spiffs_file getFh() const { return _fh; }
 
 
 private:
 
-  spiffs * _fs;
   spiffs_file _fh;
 
-  Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh);
-
+  Arduino_SPIFFS_File(spiffs_file const fh);
 
 };
 

@@ -57,7 +57,7 @@ int Arduino_SPIFFS::mount()
 File Arduino_SPIFFS::open(const char *path, uint16_t const flags)
 {
   spiffs_file const fh = SPIFFS_open(&_fs, path, flags, 0);
-  return File::create(&_fs, fh);
+  return File::create(fh);
 }
 
 Directory Arduino_SPIFFS::opendir(const char *name)
@@ -88,3 +88,9 @@ s32_t w25q16_spi_erase(u32_t addr, u32_t size)
   flash.eraseSector(addr);
   return SPIFFS_OK;
 }
+
+/**************************************************************************************
+ * EXTERN DECLARATION
+ **************************************************************************************/
+
+Arduino_SPIFFS filesystem;

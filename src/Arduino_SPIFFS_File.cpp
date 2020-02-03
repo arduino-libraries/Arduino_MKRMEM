@@ -22,13 +22,20 @@
 
 #include "Arduino_SPIFFS_File.h"
 
+#include <Arduino_SPIFFS.h>
+
+/**************************************************************************************
+ * EXTERN DEFINITION
+ **************************************************************************************/
+
+extern Arduino_SPIFFS filesystem;
+
 /**************************************************************************************
  * CTOR/DTOR
  **************************************************************************************/
 
-Arduino_SPIFFS_File::Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh)
-: _fs(fs)
-, _fh(fh)
+Arduino_SPIFFS_File::Arduino_SPIFFS_File(spiffs_file const fh)
+: _fh(fh)
 {
 
 }
@@ -42,23 +49,52 @@ Arduino_SPIFFS_File::~Arduino_SPIFFS_File()
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
 
-String Arduino_SPIFFS_File::name()
+int Arduino_SPIFFS_File::read(void * buf, int len)
 {
-  spiffs_stat stat;
-  if(SPIFFS_OK == SPIFFS_fstat(_fs, _fh, &stat)) {
-    return String(reinterpret_cast<const char *>(&(stat.name)));
-  } else {
-    return String("ERROR");
-  }
+  return filesystem.read(_fh, buf, len);
 }
 
-Arduino_SPIFFS_File Arduino_SPIFFS_File::create(spiffs * fs, spiffs_file const fh)
+int Arduino_SPIFFS_File::write(void * buf, int len)
 {
-  return Arduino_SPIFFS_File(fs, fh);
+  return filesystem.write(_fh, buf, len);
+}
+
+int Arduino_SPIFFS_File::lseek(int offs, int whence)
+{
+  return filesystem.lseek(_fh, offs, whence);
+}
+
+int Arduino_SPIFFS_File::eof()
+{
+  return filesystem.eof(_fh);
+}
+
+int Arduino_SPIFFS_File::tell()
+{
+  return filesystem.tell(_fh);
+}
+
+int Arduino_SPIFFS_File::close()
+{
+  return filesystem.close(_fh);
+}
+
+int Arduino_SPIFFS_File::remove()
+{
+  return filesystem.remove(_fh);
+}
+
+int Arduino_SPIFFS_File::flush()
+{
+  return filesystem.flush(_fh);
+}
+
+Arduino_SPIFFS_File Arduino_SPIFFS_File::create(spiffs_file const fh)
+{
+  return Arduino_SPIFFS_File(fh);
 }
 
 Arduino_SPIFFS_File Arduino_SPIFFS_File::operator = (Arduino_SPIFFS_File const & other)
 {
-  _fs = other.getFs();
   _fh = other.getFh();
 }

@@ -20,12 +20,6 @@
 static char const PANGRAM[] = "The quick brown fox jumps over the lazy dog.";
 
 /**************************************************************************************
- * GLOBAL VARIABLES
- **************************************************************************************/
-
-Arduino_SPIFFS filesystem;
-
-/**************************************************************************************
  * SETUP/LOOP
  **************************************************************************************/
 
@@ -54,7 +48,7 @@ void setup() {
    * write only mode (SPIFFS_WRONLY ). If the file does exist
    * delete the existing content (SPIFFS_TRUNC).
    */
-  File file = filesystem.open("fox.txt", CREATE | WRITE_ONLY | TRUNCATE);
+  File file = filesystem.open("fox.txt", CREATE | READ_WRITE| TRUNCATE);
 
   int const bytes_to_write = strlen(PANGRAM);
   int const bytes_written = file.write((void *)PANGRAM, bytes_to_write);
@@ -65,8 +59,6 @@ void setup() {
     Serial.print(bytes_written);
     Serial.println(" bytes written");
   }
-
-  file.close();
 
 
   Serial.println("Retrieving filesystem info ...");
@@ -82,7 +74,7 @@ void setup() {
 
 
   Serial.println("Reading ...");
-  file = filesystem.open("fox.txt", READ_ONLY);
+  file.lseek(0, START); /* Rewind file pointer to the start */
 
   char buf[64] = {0};
   int const bytes_read = file.read(buf, sizeof(buf));
