@@ -42,6 +42,19 @@ static_assert(sizeof(s32_t) == sizeof(int), "Arduino SPIFFS Wrapper - s32_t != i
 static_assert(sizeof(u32_t) == sizeof(unsigned int), "Arduino SPIFFS Wrapper - s32_t != int32_t - possible loss of data");
 
 /**************************************************************************************
+ * CONSTANTS
+ **************************************************************************************/
+
+static uint16_t constexpr APPEND     = SPIFFS_O_APPEND;
+static uint16_t constexpr TRUNCATE   = SPIFFS_O_TRUNC;
+static uint16_t constexpr CREATE     = SPIFFS_O_CREAT;
+static uint16_t constexpr READ_ONLY  = SPIFFS_O_RDONLY;
+static uint16_t constexpr WRITE_ONLY = SPIFFS_O_WRONLY;
+static uint16_t constexpr READ_WRITE = SPIFFS_O_RDWR;
+static uint16_t constexpr DIRECT     = SPIFFS_O_DIRECT; /* Any writes to the filehandle will never be cached but flushed directly */
+static uint16_t constexpr EXCLUSIVE  = SPIFFS_O_EXCL;
+
+/**************************************************************************************
  * CLASS DECLARATION
  **************************************************************************************/
 
@@ -61,7 +74,7 @@ public:
   inline void        clearerr()                                                       { SPIFFS_clearerr(&_fs); }
   
   inline int         create  (const char *path)                                       { return SPIFFS_creat(&_fs, path, 0); }
-         File        open    (const char *path, spiffs_flags flags);
+         File        open    (const char *path, uint16_t const flags);
   inline int         remove  (const char *path)                                       { return SPIFFS_remove(&_fs, path); }
   inline int         rename  (const char *old, const char *newPath)                   { return SPIFFS_rename(&_fs, old, newPath); }
 

@@ -38,8 +38,8 @@ void setup()
   }
 
   /* Note: SPIFFS is a flat file system, it doesn't have directories. */
-  File file_A = filesystem.open("/testfile_A.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
-  File file_B = filesystem.open("/testdir/testfile_B.txt", SPIFFS_CREAT | SPIFFS_WRONLY | SPIFFS_TRUNC);
+  File file_A = filesystem.open("/testfile_A.txt", CREATE | WRITE_ONLY | TRUNCATE);
+  File file_B = filesystem.open("/testdir/testfile_B.txt", CREATE | WRITE_ONLY | TRUNCATE);
 
   Serial.println("opendir('/')");
   Directory dir = filesystem.opendir("/");

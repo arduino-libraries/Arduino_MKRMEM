@@ -54,7 +54,7 @@ int Arduino_SPIFFS::mount()
                       0);
 }
 
-File Arduino_SPIFFS::open(const char *path, spiffs_flags flags)
+File Arduino_SPIFFS::open(const char *path, uint16_t const flags)
 {
   spiffs_file const fh = SPIFFS_open(&_fs, path, flags, 0);
   return File::create(&_fs, fh);
