@@ -47,6 +47,9 @@ class Arduino_SPIFFS_File
 
 public:
 
+  ~Arduino_SPIFFS_File();
+
+
   String     name  ();
   inline int read  (void * buf, int len)  { return SPIFFS_read(_fs, _fh, buf, len); }
   inline int write (void * buf, int len)  { return SPIFFS_write(_fs, _fh, buf, len); }

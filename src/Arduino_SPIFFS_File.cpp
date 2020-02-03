@@ -33,6 +33,11 @@ Arduino_SPIFFS_File::Arduino_SPIFFS_File(spiffs * fs, spiffs_file const fh)
 
 }
 
+Arduino_SPIFFS_File::~Arduino_SPIFFS_File()
+{
+  close();
+}
+
 /**************************************************************************************
  * PUBLIC MEMBER FUNCTIONS
  **************************************************************************************/
