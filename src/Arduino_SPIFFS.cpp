@@ -74,4 +74,8 @@ Directory Arduino_SPIFFS::opendir(const char *name)
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_SPIFFS filesystem(w25q16_spi_read, w25q16_spi_write, w25q16_spi_erase);
+Arduino_SPIFFS filesystem(
+#if defined(SPIFFS_USE_W25Q16DV_FLASH)
+w25q16_spi_read, w25q16_spi_write, w25q16_spi_erase
+#endif
+);
