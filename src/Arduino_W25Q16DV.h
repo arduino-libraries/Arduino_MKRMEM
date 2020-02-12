@@ -25,6 +25,8 @@
 
 #include <Arduino.h>
 
+#include <SPI.h>
+
 /**************************************************************************************
  * TYPEDEF
  **************************************************************************************/
@@ -77,7 +79,7 @@ class Arduino_W25Q16DV
 
 public:
 
-  Arduino_W25Q16DV(int const cs_pin);
+  Arduino_W25Q16DV(SPIClass & spi, int const cs_pin);
 
   void begin();
 
@@ -96,6 +98,7 @@ public:
 
 private:
 
+  SPIClass & _spi;
   int const _cs_pin;
 
   void select();
