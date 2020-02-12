@@ -187,3 +187,25 @@ void Arduino_W25Q16DV::enableWrite()
  **************************************************************************************/
 
 Arduino_W25Q16DV flash(SPI, MKRMEM_W25Q16DV_CS_PIN);
+
+/**************************************************************************************
+ * FREE FUNCTION DEFINITION
+ **************************************************************************************/
+
+s32_t w25q16_spi_read(u32_t addr, u32_t size, u8_t * buf)
+{
+  flash.read(addr, buf, size);
+  return SPIFFS_OK;
+}
+
+s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf)
+{
+  flash.programPage(addr, buf, size);
+  return SPIFFS_OK;
+}
+
+s32_t w25q16_spi_erase(u32_t addr, u32_t size)
+{
+  flash.eraseSector(addr);
+  return SPIFFS_OK;
+}

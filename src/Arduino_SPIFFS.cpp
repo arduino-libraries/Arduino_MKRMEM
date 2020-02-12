@@ -25,12 +25,21 @@
 #include "Arduino_W25Q16DV.h"
 
 /**************************************************************************************
- * INTERNAL FUNCTION DECLARATION
+ * GLOBAL VARIABLES
  **************************************************************************************/
 
-s32_t w25q16_spi_read (u32_t addr, u32_t size, u8_t * buf);
-s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf);
-s32_t w25q16_spi_erase(u32_t addr, u32_t size);
+static spiffs_config cfg;
+
+/**************************************************************************************
+ * CTOR/DTOR
+ **************************************************************************************/
+
+Arduino_SPIFFS::Arduino_SPIFFS(spiffs_read read_func, spiffs_write write_func, spiffs_erase erase_func)
+{
+  cfg.hal_read_f  = read_func;
+  cfg.hal_write_f = write_func;
+  cfg.hal_erase_f = erase_func;
+}
 
 /**************************************************************************************
  * PUBLIC MEMBER FUNCTIONS
@@ -38,12 +47,6 @@ s32_t w25q16_spi_erase(u32_t addr, u32_t size);
 
 int Arduino_SPIFFS::mount()
 {
-  spiffs_config cfg;
-    
-  cfg.hal_read_f  = w25q16_spi_read;
-  cfg.hal_write_f = w25q16_spi_write;
-  cfg.hal_erase_f = w25q16_spi_erase;
-    
   return SPIFFS_mount(&_fs,
                       &cfg,
                       _spiffs_work_buf,
@@ -68,29 +71,7 @@ Directory Arduino_SPIFFS::opendir(const char *name)
 }
 
 /**************************************************************************************
- * INTERNAL FUNCTION DEFINITION
- **************************************************************************************/
-
-s32_t w25q16_spi_read(u32_t addr, u32_t size, u8_t * buf)
-{
-  flash.read(addr, buf, size);
-  return SPIFFS_OK;
-}
-
-s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf)
-{
-  flash.programPage(addr, buf, size);
-  return SPIFFS_OK;
-}
-
-s32_t w25q16_spi_erase(u32_t addr, u32_t size)
-{
-  flash.eraseSector(addr);
-  return SPIFFS_OK;
-}
-
-/**************************************************************************************
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_SPIFFS filesystem;
+Arduino_SPIFFS filesystem(w25q16_spi_read, w25q16_spi_write, w25q16_spi_erase);

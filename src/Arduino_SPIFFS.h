@@ -62,6 +62,9 @@ class Arduino_SPIFFS
 {
 public:
 
+  Arduino_SPIFFS(spiffs_read read_func, spiffs_write write_func, spiffs_erase erase_func);
+
+
          int         mount   ();
   inline byte        mounted ()                                           { return SPIFFS_mounted(&_fs); }
   inline void        unmount ()                                           { SPIFFS_unmount(&_fs); }
