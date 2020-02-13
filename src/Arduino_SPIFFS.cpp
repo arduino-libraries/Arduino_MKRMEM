@@ -28,9 +28,22 @@
  * INTERNAL FUNCTION DECLARATION
  **************************************************************************************/
 
-s32_t w25q16_spi_read (u32_t addr, u32_t size, u8_t * buf);
-s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf);
-s32_t w25q16_spi_erase(u32_t addr, u32_t size);
+s32_t spiffs_read_func (spiffs_t * fs, u32_t addr, u32_t size, u8_t * buf);
+s32_t spiffs_write_func(spiffs_t * fs, u32_t addr, u32_t size, u8_t * buf);
+s32_t spiffs_erase_func(spiffs_t * fs, u32_t addr, u32_t size);
+
+/**************************************************************************************
+ * CTOR/DTOR
+ **************************************************************************************/
+
+Arduino_SPIFFS::Arduino_SPIFFS(Arduino_SpiffsHalWrapper & flash_hal_wrapper)
+{
+  _fs.user_data = reinterpret_cast<void *>(&flash_hal_wrapper);
+
+  _cfg.hal_read_f  = spiffs_read_func;
+  _cfg.hal_write_f = spiffs_write_func;
+  _cfg.hal_erase_f = spiffs_erase_func;
+}
 
 /**************************************************************************************
  * PUBLIC MEMBER FUNCTIONS
@@ -38,14 +51,8 @@ s32_t w25q16_spi_erase(u32_t addr, u32_t size);
 
 int Arduino_SPIFFS::mount()
 {
-  spiffs_config cfg;
-    
-  cfg.hal_read_f  = w25q16_spi_read;
-  cfg.hal_write_f = w25q16_spi_write;
-  cfg.hal_erase_f = w25q16_spi_erase;
-    
   return SPIFFS_mount(&_fs,
-                      &cfg,
+                      &_cfg,
                       _spiffs_work_buf,
                       _spiffs_fds,
                       sizeof(_spiffs_fds),
@@ -71,26 +78,27 @@ Directory Arduino_SPIFFS::opendir(const char *name)
  * INTERNAL FUNCTION DEFINITION
  **************************************************************************************/
 
-s32_t w25q16_spi_read(u32_t addr, u32_t size, u8_t * buf)
+s32_t spiffs_read_func(spiffs_t * fs, u32_t addr, u32_t size, u8_t * buf)
 {
-  flash.read(addr, buf, size);
-  return SPIFFS_OK;
+  Arduino_SpiffsHalWrapper * flash_hal_wrapper = reinterpret_cast<Arduino_SpiffsHalWrapper *>(fs->user_data);
+  return flash_hal_wrapper->read(addr, size, buf);
 }
 
-s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf)
+s32_t spiffs_write_func(spiffs_t * fs, u32_t addr, u32_t size, u8_t * buf)
 {
-  flash.programPage(addr, buf, size);
-  return SPIFFS_OK;
+  Arduino_SpiffsHalWrapper * flash_hal_wrapper = reinterpret_cast<Arduino_SpiffsHalWrapper *>(fs->user_data);
+  return flash_hal_wrapper->write(addr, size, buf);
 }
 
-s32_t w25q16_spi_erase(u32_t addr, u32_t size)
+s32_t spiffs_erase_func(spiffs_t * fs, u32_t addr, u32_t size)
 {
-  flash.eraseSector(addr);
-  return SPIFFS_OK;
+  Arduino_SpiffsHalWrapper * flash_hal_wrapper = reinterpret_cast<Arduino_SpiffsHalWrapper *>(fs->user_data);
+  return flash_hal_wrapper->erase(addr, size);
 }
 
 /**************************************************************************************
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_SPIFFS filesystem;
+static Arduino_W25Q16DV_SpiffsHalWrapper w25q16dv_wrapper(flash);
+Arduino_SPIFFS filesystem(w25q16dv_wrapper);

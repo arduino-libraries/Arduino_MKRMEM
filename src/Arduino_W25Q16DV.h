@@ -27,6 +27,8 @@
 
 #include <SPI.h>
 
+#include "Arduino_SPIFFS_HAL_Wrapper.h"
+
 /**************************************************************************************
  * TYPEDEF
  **************************************************************************************/
@@ -106,6 +108,43 @@ private:
 
   uint8_t readStatusReg1();
   void    enableWrite();
+
+};
+
+/**************************************************************************************
+ * WRAPPER CLASS DECLARATION
+ **************************************************************************************/
+
+class Arduino_W25Q16DV_SpiffsHalWrapper : public Arduino_SpiffsHalWrapper
+{
+
+public:
+
+           Arduino_W25Q16DV_SpiffsHalWrapper(Arduino_W25Q16DV & flash) : _flash(flash) { }
+  virtual ~Arduino_W25Q16DV_SpiffsHalWrapper() { }
+
+
+  virtual s32_t read(u32_t addr, u32_t size, u8_t * buf) override
+  {
+    _flash.read(addr, buf, size);
+    return SPIFFS_OK;
+  }
+
+  virtual s32_t write(u32_t addr, u32_t size, u8_t * buf) override
+  {
+    _flash.programPage(addr, buf, size);
+    return SPIFFS_OK;
+  }
+
+  virtual s32_t erase(u32_t addr, u32_t size) override
+  {
+    _flash.eraseSector(addr);
+    return SPIFFS_OK;
+  }
+
+private:
+
+  Arduino_W25Q16DV & _flash;
 
 };
 

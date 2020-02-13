@@ -27,6 +27,7 @@
 
 #include "Arduino_SPIFFS_File.h"
 #include "Arduino_SPIFFS_Directory.h"
+#include "Arduino_SPIFFS_HAL_Wrapper.h"
 
 extern "C"
 {
@@ -61,6 +62,9 @@ static uint16_t constexpr EXCLUSIVE  = SPIFFS_O_EXCL;
 class Arduino_SPIFFS
 {
 public:
+
+  Arduino_SPIFFS(Arduino_SpiffsHalWrapper & flash_hal_wrapper);
+
 
          int         mount   ();
   inline byte        mounted ()                                           { return SPIFFS_mounted(&_fs); }
@@ -100,6 +104,7 @@ public:
 private:
 
   spiffs _fs;
+  spiffs_config _cfg;
   
   u8_t   _spiffs_work_buf[SPIFFS_CFG_LOG_PAGE_SZ(0)*2];
   u8_t   _spiffs_fds[32*4];
