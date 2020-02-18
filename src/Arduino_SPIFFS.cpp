@@ -23,6 +23,15 @@
 #include "Arduino_SPIFFS.h"
 
 #include "Arduino_W25Q16DV.h"
+#include "Arduino_MKRMEM_Config.h"
+
+/**************************************************************************************
+ * GLOBAL VARIABLES
+ **************************************************************************************/
+
+#if SPIFFS_FLASH_TYPE_W25Q16DV
+static Arduino_W25Q16DV_SpiffsHalWrapper w25q16dv_wrapper(flash);
+#endif /* SPIFFS_FLASH_TYPE_W25Q16DV */
 
 /**************************************************************************************
  * INTERNAL FUNCTION DECLARATION
@@ -100,5 +109,8 @@ s32_t spiffs_erase_func(spiffs_t * fs, u32_t addr, u32_t size)
  * EXTERN DECLARATION
  **************************************************************************************/
 
-static Arduino_W25Q16DV_SpiffsHalWrapper w25q16dv_wrapper(flash);
-Arduino_SPIFFS filesystem(w25q16dv_wrapper);
+Arduino_SPIFFS filesystem(
+#if SPIFFS_FLASH_TYPE_W25Q16DV
+w25q16dv_wrapper
+#endif /* #if SPIFFS_FLASH_TYPE_W25Q16DV */
+);
