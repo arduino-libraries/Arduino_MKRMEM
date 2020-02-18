@@ -34,6 +34,20 @@ extern "C"
 }
 
 /**************************************************************************************
+ * CONFIGURATION
+ **************************************************************************************/
+
+#define SPIFFS_USE_W25Q16DV_FLASH
+
+/**************************************************************************************
+ * SANITY CHECK
+ **************************************************************************************/
+
+#if !defined(SPIFFS_USE_W25Q16DV_FLASH)
+  #error "Enable at least one flash chip for usage with Arduino_SPIFFS"
+#endif
+
+/**************************************************************************************
  * STATIC ASSERTIONS
  **************************************************************************************/
 
@@ -61,6 +75,9 @@ static uint16_t constexpr EXCLUSIVE  = SPIFFS_O_EXCL;
 class Arduino_SPIFFS
 {
 public:
+
+  Arduino_SPIFFS(spiffs_read read_func, spiffs_write write_func, spiffs_erase erase_func);
+
 
          int         mount   ();
   inline byte        mounted ()                                           { return SPIFFS_mounted(&_fs); }

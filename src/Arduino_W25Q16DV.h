@@ -25,6 +25,13 @@
 
 #include <Arduino.h>
 
+#include <SPI.h>
+
+extern "C"
+{
+#include "spiffs.h"
+}
+
 /**************************************************************************************
  * TYPEDEF
  **************************************************************************************/
@@ -77,7 +84,7 @@ class Arduino_W25Q16DV
 
 public:
 
-  Arduino_W25Q16DV(int const cs_pin);
+  Arduino_W25Q16DV(SPIClass & spi, int const cs_pin);
 
   void begin();
 
@@ -96,6 +103,7 @@ public:
 
 private:
 
+  SPIClass & _spi;
   int const _cs_pin;
 
   void select();
@@ -111,5 +119,13 @@ private:
  **************************************************************************************/
 
 extern Arduino_W25Q16DV flash;
+
+/**************************************************************************************
+ * FREE FUNCTION DECLARATION
+ **************************************************************************************/
+
+s32_t w25q16_spi_read (u32_t addr, u32_t size, u8_t * buf);
+s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf);
+s32_t w25q16_spi_erase(u32_t addr, u32_t size);
 
 #endif /* ARDUINO_W25Q16DV_H_ */

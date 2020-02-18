@@ -22,8 +22,6 @@
 
 #include "Arduino_W25Q16DV.h"
 
-#include <SPI.h>
-
 /**************************************************************************************
  * CONSTANTS
  **************************************************************************************/
@@ -35,8 +33,9 @@ static SPISettings const W25Q16DV_SPI_SETTINGS{W25Q16DV_MAX_SPI_CLK, MSBFIRST, S
  * CTOR/DTOR
  **************************************************************************************/
 
-Arduino_W25Q16DV::Arduino_W25Q16DV(int const cs_pin)
-: _cs_pin(cs_pin)
+Arduino_W25Q16DV::Arduino_W25Q16DV(SPIClass & spi, int const cs_pin)
+: _spi   (spi)
+, _cs_pin(cs_pin)
 {
 
 }
@@ -47,7 +46,7 @@ Arduino_W25Q16DV::Arduino_W25Q16DV(int const cs_pin)
 
 void Arduino_W25Q16DV::begin()
 {
-  SPI.begin();
+  _spi.begin();
   pinMode(_cs_pin, OUTPUT);
   deselect();
 }
@@ -57,11 +56,11 @@ W25Q16DV_Id Arduino_W25Q16DV::readId()
   W25Q16DV_Id id;
   
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadJedecId));
-  id.manufacturer_id = SPI.transfer(0);
-  id.memory_type     = SPI.transfer(0);
-  id.capacity        = SPI.transfer(0);
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadJedecId));
+  id.manufacturer_id = _spi.transfer(0);
+  id.memory_type     = _spi.transfer(0);
+  id.capacity        = _spi.transfer(0);
   deselect();
 
   return id;
@@ -79,17 +78,17 @@ void Arduino_W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const s
   while(isBusy()) { delayMicroseconds(1); }
 
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadData));
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadData));
   /* Address */
-  SPI.transfer(static_cast<uint8_t>(addr >> 16));
-  SPI.transfer(static_cast<uint8_t>(addr >>  8));
-  SPI.transfer(static_cast<uint8_t>(addr >>  0));
+  _spi.transfer(static_cast<uint8_t>(addr >> 16));
+  _spi.transfer(static_cast<uint8_t>(addr >>  8));
+  _spi.transfer(static_cast<uint8_t>(addr >>  0));
   /* Data */
   for(uint32_t bytes_read = 0; bytes_read < size; bytes_read++)
   {
-    buf[bytes_read] = SPI.transfer(0);
+    buf[bytes_read] = _spi.transfer(0);
   }
   deselect();
 }
@@ -101,17 +100,17 @@ void Arduino_W25Q16DV::programPage(uint32_t const addr, uint8_t const * buf, uin
   enableWrite();
 
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::PageProgram));
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::PageProgram));
   /* Address */
-  SPI.transfer(static_cast<uint8_t>(addr >> 16));
-  SPI.transfer(static_cast<uint8_t>(addr >>  8));
-  SPI.transfer(static_cast<uint8_t>(addr >>  0));
+  _spi.transfer(static_cast<uint8_t>(addr >> 16));
+  _spi.transfer(static_cast<uint8_t>(addr >>  8));
+  _spi.transfer(static_cast<uint8_t>(addr >>  0));
   /* Data */
   for(uint32_t bytes_written = 0; bytes_written < size; bytes_written++)
   {
-    SPI.transfer(buf[bytes_written]);
+    _spi.transfer(buf[bytes_written]);
   }
   deselect();
 }
@@ -123,13 +122,13 @@ void Arduino_W25Q16DV::eraseSector(uint32_t const addr)
   enableWrite();
 
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::SectorErase));
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::SectorErase));
   /* Address */
-  SPI.transfer(static_cast<uint8_t>(addr >> 16));
-  SPI.transfer(static_cast<uint8_t>(addr >>  8));
-  SPI.transfer(static_cast<uint8_t>(addr >>  0));
+  _spi.transfer(static_cast<uint8_t>(addr >> 16));
+  _spi.transfer(static_cast<uint8_t>(addr >>  8));
+  _spi.transfer(static_cast<uint8_t>(addr >>  0));
   deselect();
 }
 
@@ -140,8 +139,8 @@ void Arduino_W25Q16DV::eraseChip()
   enableWrite();
 
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ChipErase));
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::ChipErase));
   deselect();
 
   /* In this instance wait within this function since it's so time consuming */
@@ -165,11 +164,11 @@ void Arduino_W25Q16DV::deselect()
 uint8_t Arduino_W25Q16DV::readStatusReg1()
 {
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
   /* Command */
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadStatusReg1));
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadStatusReg1));
   /* Read Status Reg 1 */
-  uint8_t const status_reg_1 = SPI.transfer(0);
+  uint8_t const status_reg_1 = _spi.transfer(0);
   deselect();
 
   return status_reg_1;
@@ -178,8 +177,8 @@ uint8_t Arduino_W25Q16DV::readStatusReg1()
 void Arduino_W25Q16DV::enableWrite()
 {
   select();
-  SPI.beginTransaction(W25Q16DV_SPI_SETTINGS);
-  SPI.transfer(static_cast<uint8_t>(W25Q16DV_Command::WriteEnable));
+  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::WriteEnable));
   deselect();
 }
 
@@ -187,4 +186,26 @@ void Arduino_W25Q16DV::enableWrite()
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_W25Q16DV flash(MKRMEM_W25Q16DV_CS_PIN);
+Arduino_W25Q16DV flash(SPI, MKRMEM_W25Q16DV_CS_PIN);
+
+/**************************************************************************************
+ * FREE FUNCTION DEFINITION
+ **************************************************************************************/
+
+s32_t w25q16_spi_read(u32_t addr, u32_t size, u8_t * buf)
+{
+  flash.read(addr, buf, size);
+  return SPIFFS_OK;
+}
+
+s32_t w25q16_spi_write(u32_t addr, u32_t size, u8_t * buf)
+{
+  flash.programPage(addr, buf, size);
+  return SPIFFS_OK;
+}
+
+s32_t w25q16_spi_erase(u32_t addr, u32_t size)
+{
+  flash.eraseSector(addr);
+  return SPIFFS_OK;
+}
