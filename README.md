@@ -1,5 +1,6 @@
-# Arduino MKRMEM
-This library provides a driver for the Arduino MKR MEM shield W25Q16DV SPI flash (with a capacity of 2 MByte) complete with integration for the [SPIFFS](https://github.com/pellepl/spiffs) embedded flash file system (EFFS).
+`Arduino_MKRMEM`
+================
+This library provides a driver for the [Arduino MKR MEM Shield](https://store.arduino.cc/arduino-mkr-mem-shield) W25Q16DV SPI flash (with a capacity of 2 MByte) complete with integration for the [SPIFFS](https://github.com/pellepl/spiffs) embedded flash file system (EFFS).
 
 **Attention**: Before you can use SPIFFS you need to erase and format the flash memory chip using [SPIFFSFormat.ino](examples/SPIFFSFormat/SPIFFSFormat.ino).
 
