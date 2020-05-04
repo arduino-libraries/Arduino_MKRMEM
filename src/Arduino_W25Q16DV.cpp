@@ -29,6 +29,10 @@
 static uint32_t const W25Q16DV_MAX_SPI_CLK = 104 * 1000 * 1000; /* 104 MHz */
 static SPISettings const W25Q16DV_SPI_SETTINGS{W25Q16DV_MAX_SPI_CLK, MSBFIRST, SPI_MODE0};
 
+
+static uint32_t const W25Q16DV_MAXREAD_SPI_CLK = 50 * 1000 * 1000; /* 50 MHz Max Read */
+static SPISettings const W25Q16DV_SPIREAD_SETTINGS{W25Q16DV_MAXREAD_SPI_CLK, MSBFIRST, SPI_MODE0};
+
 /**************************************************************************************
  * CTOR/DTOR
  **************************************************************************************/
@@ -78,7 +82,7 @@ void Arduino_W25Q16DV::read(uint32_t const addr, uint8_t * buf, uint32_t const s
   while(isBusy()) { delayMicroseconds(1); }
 
   select();
-  _spi.beginTransaction(W25Q16DV_SPI_SETTINGS);
+  _spi.beginTransaction(W25Q16DV_SPIREAD_SETTINGS);
   /* Command */
   _spi.transfer(static_cast<uint8_t>(W25Q16DV_Command::ReadData));
   /* Address */
