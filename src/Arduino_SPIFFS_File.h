@@ -64,6 +64,7 @@ public:
 
 
   Arduino_SPIFFS_File operator = (Arduino_SPIFFS_File const & other);
+  operator bool ();
   inline spiffs_file getFh() const { return _fh; }
 
 

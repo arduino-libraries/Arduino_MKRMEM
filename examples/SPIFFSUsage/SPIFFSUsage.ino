@@ -42,10 +42,21 @@ void setup() {
     Serial.println("check() failed with error code "); Serial.println(filesystem.err()); return;
   }
 
+  Serial.print("Checking for file ... ");
+  File fnf = filesystem.open("404.txt", READ_ONLY);
+  if (!fnf) {
+    Serial.println(" 404.txt does not exist.");
+  }
+
+  Serial.print("Checking for file ... ");
+  File fox = filesystem.open("fox.txt", READ_ONLY);
+  if (fox) {
+    Serial.println(" fox.txt exists. It will be overwrite.");
+  }
 
   Serial.println("Writing ...");
   /* Create file if it doesn't exist (SPIFFS_CREAT) and open in 
-   * write only mode (SPIFFS_WRONLY ). If the file does exist
+   * write only mode (SPIFFS_WRONLY). If the file does exist
    * delete the existing content (SPIFFS_TRUNC).
    */
   File file = filesystem.open("fox.txt", CREATE | READ_WRITE| TRUNCATE);
