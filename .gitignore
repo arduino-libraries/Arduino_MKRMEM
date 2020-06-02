@@ -1,0 +1,7 @@
+.vscode/
+**/sketch.json
+**/*.bin
+**/*.elf
+**/*.hex
+**/*.map
+build/
