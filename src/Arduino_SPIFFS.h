@@ -65,7 +65,10 @@ static uint16_t constexpr CREATE        = SPIFFS_O_CREAT;
 static uint16_t constexpr READ_ONLY     = SPIFFS_O_RDONLY;
 static uint16_t constexpr WRITE_ONLY    = SPIFFS_O_WRONLY;
 static uint16_t constexpr READ_WRITE    = SPIFFS_O_RDWR;
-static uint16_t constexpr WRITE_DIRECT  = SPIFFS_O_DIRECT; /* Any writes to the filehandle will never be cached but flushed directly */
+#ifdef DIRECT
+#undef DIRECT
+#endif
+static uint16_t constexpr DIRECT        = SPIFFS_O_DIRECT; /* Any writes to the filehandle will never be cached but flushed directly */
 static uint16_t constexpr EXCLUSIVE     = SPIFFS_O_EXCL;
 
 /**************************************************************************************
