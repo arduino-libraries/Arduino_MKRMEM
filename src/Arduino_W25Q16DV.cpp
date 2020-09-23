@@ -190,7 +190,13 @@ void Arduino_W25Q16DV::enableWrite()
  * EXTERN DECLARATION
  **************************************************************************************/
 
-Arduino_W25Q16DV flash(SPI, MKRMEM_W25Q16DV_CS_PIN);
+Arduino_W25Q16DV flash(SPI,
+#if defined(ARDUINO_OUTDOOR_CARRIER)
+OUTDOOR_CARRIER_W25Q16DV_CS_PIN
+#else
+MKRMEM_W25Q16DV_CS_PIN
+#endif
+);
 
 /**************************************************************************************
  * FREE FUNCTION DEFINITION
