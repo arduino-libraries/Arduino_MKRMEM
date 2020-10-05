@@ -191,8 +191,8 @@ void Arduino_W25Q16DV::enableWrite()
  **************************************************************************************/
 
 Arduino_W25Q16DV flash(SPI,
-#if defined(ARDUINO_OUTDOOR_CARRIER)
-OUTDOOR_CARRIER_W25Q16DV_CS_PIN
+#if defined(ARDUINO_EDGE_CONTROL)
+EDGE_CONTROL_W25Q16DV_CS_PIN
 #else
 MKRMEM_W25Q16DV_CS_PIN
 #endif

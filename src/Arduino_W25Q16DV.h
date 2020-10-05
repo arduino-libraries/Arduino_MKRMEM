@@ -72,8 +72,8 @@ typedef union
 /**************************************************************************************
  * CONSTANTS
  **************************************************************************************/
-#if defined(ARDUINO_OUTDOOR_CARRIER)
-static int const OUTDOOR_CARRIER_W25Q16DV_CS_PIN = 28;
+#if defined(ARDUINO_EDGE_CONTROL)
+static int const EDGE_CONTROL_W25Q16DV_CS_PIN = 28;
 #else
 static int const MKRMEM_W25Q16DV_CS_PIN = 5;
 #endif
