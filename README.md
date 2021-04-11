@@ -1,6 +1,7 @@
 `Arduino_MKRMEM`
 ================
 
+[![Check Arduino status](https://github.com/arduino-libraries/Arduino_MKRMEM/actions/workflows/check-arduino.yml/badge.svg)](https://github.com/arduino-libraries/Arduino_MKRMEM/actions/workflows/check-arduino.yml)
 [![Spell Check status](https://github.com/arduino-libraries/Arduino_MKRMEM/actions/workflows/spell-check.yml/badge.svg)](https://github.com/arduino-libraries/Arduino_MKRMEM/actions/workflows/spell-check.yml)
 
 This library provides a driver for the [Arduino MKR MEM Shield](https://store.arduino.cc/arduino-mkr-mem-shield) W25Q16DV SPI flash (with a capacity of 2 MByte) complete with integration for the [SPIFFS](https://github.com/pellepl/spiffs) embedded flash file system (EFFS).
