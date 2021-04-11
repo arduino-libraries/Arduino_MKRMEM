@@ -1,7 +1,7 @@
 /* SPIFFSUsage.ino
  * 
  * This sketch demonstrates various file operations utilizing
- * the Arduino MKR MEM shield port for the SPIFFS.
+ * the Arduino MKR MEM Shield port for the SPIFFS.
  * 
  * Alexander Entinger
  */
@@ -51,7 +51,7 @@ void setup() {
   Serial.print("Checking for file ... ");
   File fox = filesystem.open("fox.txt", READ_ONLY);
   if (fox) {
-    Serial.println(" fox.txt exists. It will be overwrite.");
+    Serial.println(" fox.txt exists. It will be overwritten.");
   }
 
   Serial.println("Writing ...");

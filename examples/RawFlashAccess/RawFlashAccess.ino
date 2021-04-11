@@ -1,7 +1,7 @@
 /* RawFlashAccess.ino
  * 
  * This sketch demonstrates the raw API of the W25Q16DV class
- * whichallows for low level flash memory control.
+ * which allows for low level flash memory control.
  * 
  * Alexander Entinger
  */
