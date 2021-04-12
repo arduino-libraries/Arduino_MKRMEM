@@ -1,7 +1,7 @@
 /* SPIFFSDirectories.ino
  * 
  * This sketch demonstrates how to use directories (as much
- * as supported by SPIFFS).
+ * as is supported by SPIFFS).
  * 
  * Alexander Entinger
  */
@@ -31,7 +31,7 @@ void setup()
     Serial.println("mount() failed with error code "); Serial.println(res); return;
   }
 
-  /* Note: SPIFFS is a flat file system, it doesn't have directories. */
+  /* Note: SPIFFS is a flat file system; it doesn't have directories. */
   File file_A = filesystem.open("/testfile_A.txt", CREATE | WRITE_ONLY | TRUNCATE);
   File file_B = filesystem.open("/testdir/testfile_B.txt", CREATE | WRITE_ONLY | TRUNCATE);
 
